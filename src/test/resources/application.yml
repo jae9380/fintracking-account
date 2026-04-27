@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:../test-db/fintracking_account;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  h2:
+    console:
+      enabled: false
+
+encryption:
+  aes-key: 01234567890123456789012345678901
