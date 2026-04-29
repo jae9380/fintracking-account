@@ -6,6 +6,7 @@ import com.ft.account.application.factory.AccountFactory;
 import com.ft.account.application.port.AccountRepository;
 import com.ft.account.domain.Account;
 import com.ft.common.exception.CustomException;
+import com.ft.common.metric.annotation.Monitored;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     // 계좌 생성
+    @Monitored(domain = "account", layer = "service", api = "create")
     @Transactional
     public AccountResult create(Long userId, CreateAccountCommand command) {
         Account account = AccountFactory.create(userId, command);
@@ -28,6 +30,7 @@ public class AccountService {
     }
 
     // 계좌 목록 조회
+    @Monitored(domain = "account", layer = "service", api = "find_all")
     @Transactional(readOnly = true)
     public List<AccountResult> findAll(Long userId) {
         return accountRepository.findAllByUserId(userId)
@@ -37,6 +40,7 @@ public class AccountService {
     }
 
     // 계좌 단건 조회
+    @Monitored(domain = "account", layer = "service", api = "find_by_id")
     @Transactional(readOnly = true)
     public AccountResult findById(Long userId, Long accountId) {
         Account account = getAccount(accountId);
@@ -45,6 +49,7 @@ public class AccountService {
     }
 
     // 계좌 삭제
+    @Monitored(domain = "account", layer = "service", api = "delete")
     @Transactional
     public void delete(Long userId, Long accountId) {
         Account account = getAccount(accountId);

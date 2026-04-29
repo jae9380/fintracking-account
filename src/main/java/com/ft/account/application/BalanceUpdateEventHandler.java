@@ -6,6 +6,7 @@ import com.ft.common.event.TransactionCreatedEvent;
 import com.ft.common.exception.CustomException;
 import com.ft.common.kafka.EventHandler;
 import com.ft.common.kafka.KafkaTopic;
+import com.ft.common.metric.annotation.MonitoredKafka;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -21,6 +22,7 @@ public class BalanceUpdateEventHandler implements EventHandler<TransactionCreate
 
     private final AccountRepository accountRepository;
 
+    @MonitoredKafka(topic = KafkaTopic.TRANSACTION_CREATED, action = "consume")
     @KafkaListener(topics = KafkaTopic.TRANSACTION_CREATED, groupId = "account-service")
     @Transactional
     @Override
