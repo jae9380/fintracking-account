@@ -31,10 +31,20 @@ public class BalanceUpdateEventHandler implements EventHandler<TransactionCreate
                 event.transactionId(), event.type(), event.accountId(), event.amount());
 
         switch (event.type()) {
-            case "INCOME" -> getAccount(event.accountId()).deposit(event.amount());
-            case "EXPENSE" -> getAccount(event.accountId()).withdraw(event.amount());
+            case "INCOME" -> {
+                Account account = getAccount(event.accountId());
+                account.validateOwner(event.userId());
+                account.deposit(event.amount());
+            }
+            case "EXPENSE" -> {
+                Account account = getAccount(event.accountId());
+                account.validateOwner(event.userId());
+                account.withdraw(event.amount());
+            }
             case "TRANSFER" -> {
-                getAccount(event.accountId()).withdraw(event.amount());
+                Account from = getAccount(event.accountId());
+                from.validateOwner(event.userId());
+                from.withdraw(event.amount());
                 if (event.toAccountId() != null) {
                     getAccount(event.toAccountId()).deposit(event.amount());
                 }
