@@ -73,13 +73,10 @@ public class Account extends BaseEntity {
         this.balance = this.balance.add(amount);
     }
 
-    // 출금
+    // 출금 (마이너스 잔액 허용)
     public void withdraw(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new CustomException(ACCOUNT_INVALID_AMOUNT);
-        }
-        if (this.balance.compareTo(amount) < 0) {
-            throw new CustomException(ACCOUNT_INSUFFICIENT_BALANCE);
         }
         this.balance = this.balance.subtract(amount);
     }
